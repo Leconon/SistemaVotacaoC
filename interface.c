@@ -22,17 +22,7 @@ void limparEspaco(int xInicial, int yInicial, int xFinal, int yFinal) {
 }
 
 void limpaTela() {
-    int i, j;
-
-    gotoxy(0,0);
-
-    for (i=0; i<30; i++) {
-        for (j=0; j<80; j++) {
-            printf(" ");
-        }
-    }
-
-    gotoxy(0,0);
+    system("cls");
 }
 
 void desenhaRetangulo(int xInicial, int yInicial, int xFinal, int yFinal, int pintado, int bordaDupla) {
@@ -63,7 +53,7 @@ void desenhaRetangulo(int xInicial, int yInicial, int xFinal, int yFinal, int pi
             }
         }
         printf("%c", bordaDupla ? 186 : 179);
-        gotoxy(2, yInicial+i+2);
+        gotoxy(xInicial, yInicial+i+2);
     }
 
     printf("%c", bordaDupla ? 200 : 192);
