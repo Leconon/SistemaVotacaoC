@@ -1,18 +1,11 @@
 #include <stdio.h>
 #include <string.h>
-#include "utils.c"
 
 void limparEspaco(int xInicial, int yInicial, int xFinal, int yFinal) {
     int i, j;
-
-    xInicial--;
-    yInicial--;
-
-    gotoxy(xInicial, yInicial);
-
-    for (i=0; i<yFinal; i++) {
+    for (i=0; i<yFinal+1; i++) {
         gotoxy(xInicial, yInicial + i);
-        for (j=0; j<xFinal; j++) {
+        for (j=0; j<xFinal+1; j++) {
             printf(" ");
         }
         if ((xFinal + xInicial < 80) && (i<yFinal-1)) {
@@ -47,7 +40,7 @@ void desenhaRetangulo(int xInicial, int yInicial, int xFinal, int yFinal, int pi
         printf("%c", bordaDupla ? 186 : 179);
         for (j=0; j<xFinal; j++) {
             if (pintado) {
-                printf("%c", 219);
+                printf("%c", 177);
             } else {
                 printf(" ");
             }
@@ -72,7 +65,7 @@ void desenhaBotao(int xInicial, int yInicial, int xFinal, int yFinal, int pintad
     int posX = (xFinal - strlen(texto))/2 + xInicial + 1;
 
     gotoxy(posX, posY);
-    puts(texto);
+    put8s(texto);
 }
 
 void printarChar(char c, int qtd) {
@@ -146,4 +139,21 @@ void imprimirLogoTsec(int x, int y) {
     printarChar(219, 9);
     printarChar(' ', 2);
     printarChar(219, 8);
+}
+
+void desenhaInterface(char titulo[]) {
+    int i, c = 177;
+    int tamTitulo = strlen(titulo);
+    int posTitulo = (79-tamTitulo)/2;
+
+    desenhaRetangulo(0, 0, 79, 24, 0, 1);
+    gotoxy(0, 0);
+    gotoxy(0, 4);
+    printarChar(204, 1);
+    printarChar(205, 78);
+    printarChar(185, 1);
+    gotoxy(1, 1);
+
+    gotoxy(posTitulo, 2);
+    put8s(titulo);
 }
