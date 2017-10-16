@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+//#include <time.h>
 
 void limparEspaco(int xInicial, int yInicial, int xFinal, int yFinal) {
     int i, j;
@@ -24,12 +25,16 @@ void desenhaRetangulo(int xInicial, int yInicial, int xFinal, int yFinal, int pi
     xFinal--;
     yFinal--;
 
+    char bordaH = bordaDupla ? 205 : 196;
+    char bordaV = bordaDupla ? 186 : 179;
+    char interior = pintado ? 177 : ' ';
+
     gotoxy(xInicial, yInicial);
 
     printf("%c", bordaDupla ? 201 : 218);
 
     for (i=0; i<xFinal; i++) {
-        printf("%c", bordaDupla ? 205 : 196);
+        printf("%c", bordaH);
     }
 
     printf("%c", bordaDupla ? 187 : 191);
@@ -37,22 +42,18 @@ void desenhaRetangulo(int xInicial, int yInicial, int xFinal, int yFinal, int pi
     gotoxy(xInicial, yInicial + 1);
 
     for (i=0; i<yFinal; i++) {
-        printf("%c", bordaDupla ? 186 : 179);
+        printf("%c", bordaV);
         for (j=0; j<xFinal; j++) {
-            if (pintado) {
-                printf("%c", 177);
-            } else {
-                printf(" ");
-            }
+            printf("%c", interior);
         }
-        printf("%c", bordaDupla ? 186 : 179);
+        printf("%c", bordaV);
         gotoxy(xInicial, yInicial+i+2);
     }
 
     printf("%c", bordaDupla ? 200 : 192);
 
     for (i=0; i<xFinal; i++) {
-        printf("%c", bordaDupla ? 205 : 196);
+        printf("%c", bordaH);
     }
 
     printf("%c", bordaDupla ? 188 : 217);
