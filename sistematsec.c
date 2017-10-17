@@ -132,23 +132,40 @@ struct Candidato verificarCandidato(int num) {
 
 
 void votacao() {
+    char num[] = "xx";
+    struct Candidato c;
+
     limpaTela();
     char pressionado;
     desenharTecladoUrna(0);
     desenharBotoesAcao();
     desenharTelaVotacao();
+    desenharDetalhesVoto(num, c);
     while(1) {
         pressionado = getch();
-        desenharTecladoUrna(pressionado);
-        desenharBotoesAcao();
+        int valido = isCharNumber(pressionado);
+
+        if (valido) {
+            if (num[0] == 'x') {
+                num[0] = pressionado;
+            } else if (num[1] == 'x') {
+                num[1] = pressionado;
+                c = verificarCandidato(strToInt(num));
+            }
+            desenharTecladoUrna(pressionado);
+        } else {
+            if (pressionado == 8) {
+                num[0] = 'x';
+                num[1] = 'x';
+            }
+            desenharBotoesAcao();
+        }
+
         delay(100);
         desenharTecladoUrna(0);
         desenharBotoesAcao(0);
+        desenharDetalhesVoto(num, c);
     }
-
-    struct Candidato c;
-    c = verificarCandidato(17);
-    puts(c.nome);
 }
 
 void desenharTecladoUrna(char pressionado) {
@@ -181,8 +198,8 @@ void desenharTelaVotacao() {
     printf("SEU VOTO PARA PREFEITO");
     gotoxy(5, 8);
     put8s("Número: ");
-    desenhaRetangulo(12, 6, 3, 3, 0, 0);
-    desenhaRetangulo(16, 6, 3, 3, 0, 0);
+    desenhaRetangulo(12, 6, 4, 3, 0, 0);
+    desenhaRetangulo(17, 6, 4, 3, 0, 0);
     gotoxy(5, 12);
     printf("Nome: ");
     gotoxy(2, 17);
@@ -195,4 +212,26 @@ void desenharTelaVotacao() {
     printf("ENTER para CONFIRMAR");
     gotoxy(9, 21);
     printf("APAGAR para CORRIGIR");
+}
+
+void desenharDetalhesVoto(char num[], struct Candidato c) {
+    gotoxy(14,8);
+    if (num[0] != 'x') {
+        printf("%c", num[0]);
+        gotoxy(19,8);
+    } else {
+        printf("%c", ' ');
+        gotoxy(14,8);
+    }
+
+    if (num[1] != 'x') {
+        printf("%c", num[1]);
+        gotoxy(12, 12);
+        put8s(c.nome);
+    } else {
+        gotoxy(19,8);
+        printf("%c", ' ');
+        gotoxy(12, 12);
+        printarChar(' ', 20);
+    }
 }

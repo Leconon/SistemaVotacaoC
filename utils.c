@@ -45,3 +45,23 @@ int strToInt(char num[]) {
     }
     return retorno;
 }
+
+int isCharNumber(char num) {
+    char i;
+    for (i='0'; i<='9'; i++) {
+        if (num == i) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int isNumber(char num[]) {
+    int i;
+    for (i=0; i<strlen(num); i++) {
+        if (!isCharNumber(num[i])) {
+            return 0;
+        }
+    }
+    return 1;
+}
