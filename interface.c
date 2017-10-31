@@ -25,38 +25,45 @@ void desenhaRetangulo(int xInicial, int yInicial, int xFinal, int yFinal, int pi
     xFinal--;
     yFinal--;
 
+    char linha[xFinal + 5];
+
     char bordaH = bordaDupla ? 205 : 196;
     char bordaV = bordaDupla ? 186 : 179;
     char interior = pintado ? 177 : ' ';
 
     gotoxy(xInicial, yInicial);
-
-    printf("%c", bordaDupla ? 201 : 218);
+    strcpy(linha, "");
+    linha[0] = bordaDupla ? 201 : 218;
 
     for (i=0; i<xFinal; i++) {
-        printf("%c", bordaH);
+        linha[i+1] = bordaH;
     }
 
-    printf("%c", bordaDupla ? 187 : 191);
-
+    linha[i+1] = bordaDupla ? 187 : 191;
+    fwrite(linha, 1, xFinal + 2, stdout);
+    strcpy(linha, "");
     gotoxy(xInicial, yInicial + 1);
 
     for (i=0; i<yFinal; i++) {
-        printf("%c", bordaV);
+        linha[0] = bordaV;
         for (j=0; j<xFinal; j++) {
-            printf("%c", interior);
+            linha[j+1] = interior;
         }
-        printf("%c", bordaV);
+        linha[j+1] = bordaV;
+        fwrite(linha, 1, xFinal + 2, stdout);
         gotoxy(xInicial, yInicial+i+2);
+        strcpy(linha, "");
     }
 
-    printf("%c", bordaDupla ? 200 : 192);
+    linha[0] = bordaDupla ? 200 : 192;
 
     for (i=0; i<xFinal; i++) {
-        printf("%c", bordaH);
+        linha[i+1] = bordaH;
     }
 
-    printf("%c", bordaDupla ? 188 : 217);
+    linha[i+1] = bordaDupla ? 188 : 217;
+    fwrite(linha, 1, xFinal + 2, stdout);
+    strcpy(linha, "");
 }
 
 void desenhaBotao(int xInicial, int yInicial, int xFinal, int yFinal, int pintado, int bordaDupla, char texto[]) {
