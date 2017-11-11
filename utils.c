@@ -38,13 +38,38 @@ int charToInt(char num) {
 }
 
 int strToInt(char num[]) {
-    int i, dez = 0, retorno = 0;
+    int i, dez = 1, retorno = 0;
     for (i=strlen(num)-1; i>=0; i--) {
-        retorno += charToInt(num[i]) * (dez > 0 ? 10 * (dez) : 1);
-        dez++;
+        retorno += charToInt(num[i]) * dez;
+        dez *= 10;
     }
     return retorno;
 }
+
+/*char* intToStr(int num) {
+    int i,j;
+    int pow = 10;
+    int numCasas = 1;
+    int resto = 0;
+    while ((num/pow) > 0) {
+        pow *= 10;
+        numCasas++;
+    }
+
+    char* texto[numCasas];
+
+    for (i=0; i<numCasas; i++) {
+        int ordem = 1;
+        for (j=numCasas-i-1; j>0; j--) {
+            ordem *= 10;
+        }
+        int digito = num/ordem;
+        num -= digito * ordem;
+        texto[i] = digito + 48;
+    }
+    char* retorno = (char*) texto;
+    return retorno;
+}*/
 
 int isCharNumber(char num) {
     char i;
