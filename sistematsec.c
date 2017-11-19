@@ -4,16 +4,25 @@
 
 #include "utils.c"
 #include "interface.c"
+#include "modulovotacao.c"
+#include "VotacaoIO.c"
 
 #define INI_VOTACAO 1
 #define VER_RESULTADOS 2
 #define SAIR 3
 
 int main() {
-    desenhaTelaCarregamento();
-    system("color F0");
-    desenhaMenuPrincipal();
-    //iniciarVotacao();
+    if (1) {
+        desenhaTelaCarregamento();
+        votosRealizados = verificaNumRegistros();
+        qtdEleitores = verificaTotalVotos();
+        system("color F0");
+        desenhaMenuPrincipal();
+    } else {
+        votosRealizados = verificaNumRegistros();
+        qtdEleitores = verificaTotalVotos();
+        printf("%i  %i", votosRealizados, qtdEleitores);
+    }
     return 0;
 }
 
@@ -40,7 +49,7 @@ void desenhaMenuPrincipal() {
         if (opcaoSelecionada) {
             pintado = 1;
         }
-        desenhaBotaoMenu(INI_VOTACAO, "Iniciar Votação", opcaoSelecionada, opcaoMenu, pintado);
+        desenhaBotaoMenu(INI_VOTACAO, qtdEleitores > 0 && qtdEleitores > votosRealizados ? "Continuar Votação" : "Iniciar nova votação", opcaoSelecionada, opcaoMenu, pintado);
         desenhaBotaoMenu(VER_RESULTADOS, "Verificar Resultados", opcaoSelecionada, opcaoMenu, pintado);
         desenhaBotaoMenu(SAIR, "Sair", opcaoSelecionada, opcaoMenu, pintado);
         if (!pintado) {
@@ -57,7 +66,7 @@ void desenhaMenuPrincipal() {
             delay(100);
             switch (opcaoSelecionada) {
                 case INI_VOTACAO: iniciarVotacao(); break;
-                case VER_RESULTADOS: break;
+                case VER_RESULTADOS: desenhaResultados(); break;
                 case SAIR: opcaoSelecionada = -1; break;
             }
             pintado = 0;
@@ -73,165 +82,10 @@ void desenhaBotaoMenu(int index, char texto[], int opcaoSelecionada, int opcaoMe
     desenhaBotao(15, (index * 5) + 1, 49, 4, opcaoSelecionada == index && pintado, opcaoMenu == index, texto);
 }
 
+/////////////////////////////////////
 
-/*
- * O Código abaixo é o módulo de votação, deverá ser separado em um outro arquivo em breve.
- */
-
-static int qtdEleitores = 0;
-
-struct Candidato {
-    int num;
-    char nome[50];
-    int valido;
-};
-
-void iniciarVotacao() {
-    // Verificar se já existe o arquivo de dados
-    pedirNumeroEleitores();
-    if (qtdEleitores > 0) {
-        votacao();
-    }
+void desenhaResultados() {
+    limpaTela();
+    puts("votacao");
     getch();
-}
-
-void inicializarCandidatos() {
-
-}
-
-void pedirNumeroEleitores() {
-    limpaTela();
-    int qtd = 0;
-    desenhaInterface("Iniciar nova votação");
-    while(!qtd) {
-        limparEspaco(1,5,77,18);
-        gotoxy(4,7);
-        printf("Quantidade de eleitores: ");
-        scanf("%i", &qtd);
-        fflush(stdin);
-    }
-    qtdEleitores = qtd;
-    qtdEleitores = 5;
-    limpaTela();
-}
-
-struct Candidato verificarCandidato(int num) {
-    struct Candidato c;
-    strcpy(c.nome, "Voto Nulo");
-    c.num = num;
-    c.valido = 1;
-    switch (num) {
-        case 17: strcpy(c.nome, "Voto Nulo"); return c;
-        case 22: strcpy(c.nome, "Maeli Gente"); return c;
-        case 31: strcpy(c.nome, "Lissandra Progresso"); return c;
-        case 38: strcpy(c.nome, "Maia da Ana"); return c;
-    }
-    c.valido = 0;
-    return c;
-}
-
-
-void votacao() {
-    char num[] = "xx";
-    struct Candidato c;
-
-    limpaTela();
-    char pressionado;
-    desenharTecladoUrna(0);
-    desenharBotoesAcao();
-    desenharTelaVotacao();
-    desenharDetalhesVoto(num, c);
-    while(1) {
-        pressionado = getch();
-        int valido = isCharNumber(pressionado);
-
-        if (valido) {
-            if (num[0] == 'x') {
-                num[0] = pressionado;
-            } else if (num[1] == 'x') {
-                num[1] = pressionado;
-                c = verificarCandidato(strToInt(num));
-            }
-            desenharTecladoUrna(pressionado);
-        } else {
-            if (pressionado == 8) {
-                num[0] = 'x';
-                num[1] = 'x';
-            }
-            desenharBotoesAcao();
-        }
-
-        delay(100);
-        desenharTecladoUrna(0);
-        desenharBotoesAcao(0);
-        desenharDetalhesVoto(num, c);
-    }
-}
-
-void desenharTecladoUrna(char pressionado) {
-    int i, j, num = 0;
-    for (i=0; i<3; i++) {
-        for (j=0; j<3; j++) {
-            num++;
-            desenharBotaoNumerico(49 + (j*10),1 + (i*5),num,pressionado);
-        }
-    }
-}
-
-void desenharBotaoNumerico(int x, int y, int numero, char pressionado) {
-    numero = numero + 48;
-    char texto[2];
-    texto[0] = numero;
-    texto[1] = '\0';
-    desenhaBotao(x,y,8,4,(numero == pressionado),0,texto);
-}
-
-void desenharBotoesAcao(char pressionado) {
-    desenhaBotao(49, 16, 13, 2, pressionado == 32, 0, "Branco");
-    desenhaBotao(64, 16, 13, 2, pressionado == 8, 0, "Corrige");
-    desenhaBotao(49, 19, 28, 4, pressionado == 13, 0, "Confirma");
-}
-
-void desenharTelaVotacao() {
-    desenhaRetangulo(2,1,45,22,0,0);
-    gotoxy(5, 3);
-    printf("SEU VOTO PARA PREFEITO");
-    gotoxy(5, 8);
-    put8s("Número: ");
-    desenhaRetangulo(12, 6, 4, 3, 0, 0);
-    desenhaRetangulo(17, 6, 4, 3, 0, 0);
-    gotoxy(5, 12);
-    printf("Nome: ");
-    gotoxy(2, 17);
-    printarChar(195, 1);
-    printarChar(196, 44);
-    printarChar(180, 1);
-    gotoxy(5, 19);
-    printf("Aperte a tecla:");
-    gotoxy(10, 20);
-    printf("ENTER para CONFIRMAR");
-    gotoxy(9, 21);
-    printf("APAGAR para CORRIGIR");
-}
-
-void desenharDetalhesVoto(char num[], struct Candidato c) {
-    gotoxy(14,8);
-    if (num[0] != 'x') {
-        printf("%c", num[0]);
-        gotoxy(19,8);
-    } else {
-        printf("%c", ' ');
-        gotoxy(14,8);
-    }
-
-    if (num[1] != 'x') {
-        printf("%c", num[1]);
-        gotoxy(12, 12);
-        put8s(c.nome);
-    } else {
-        gotoxy(19,8);
-        printf("%c", ' ');
-        gotoxy(12, 12);
-        printarChar(' ', 20);
-    }
 }

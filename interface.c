@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-//#include <time.h>
 
 void limparEspaco(int xInicial, int yInicial, int xFinal, int yFinal) {
     int i, j;

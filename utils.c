@@ -34,14 +34,16 @@ void put8s(char texto[]) {
 }
 
 int charToInt(char num) {
-    return num - 48;
+    return num > 47 && num < 58 ? num - 48 : 0;
 }
 
 int strToInt(char num[]) {
     int i, dez = 1, retorno = 0;
     for (i=strlen(num)-1; i>=0; i--) {
-        retorno += charToInt(num[i]) * dez;
-        dez *= 10;
+        if (num[i] > 47 && num[i] < 58) {
+            retorno += charToInt(num[i]) * dez;
+            dez *= 10;
+        }
     }
     return retorno;
 }

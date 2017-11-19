@@ -2,7 +2,7 @@
 #include "interface.h"
 #include "utils.h"
 
-void telaCarregamento() {
+/*void telaCarregamento() {
     imprimirLogoTsec(19, 4);
     desenhaRetangulo(25, 14, 30, 2, 0, 0);
     int i;
@@ -13,4 +13,4 @@ void telaCarregamento() {
     }
     limpaTela();
     getch();
-}
+}*/
