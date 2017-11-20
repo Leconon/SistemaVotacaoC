@@ -72,7 +72,7 @@ void desenhaBotao(int xInicial, int yInicial, int xFinal, int yFinal, int pintad
     int posX = (xFinal - strlen(texto))/2 + xInicial + 1;
 
     gotoxy(posX, posY);
-    put8s(texto);
+    put8s(texto, 0);
 }
 
 void printarChar(char c, int qtd) {
@@ -162,5 +162,17 @@ void desenhaInterface(char titulo[]) {
     gotoxy(1, 1);
 
     gotoxy(posTitulo, 2);
-    put8s(titulo);
+    put8s(titulo, 0);
+}
+
+void desenhaDivisaoVInterface(int x) {
+    int i;
+    gotoxy(x, 4);
+    printarChar(203, 1);
+    for (i=1; i<20; i++) {
+        gotoxy(x, 4+i);
+        printarChar(186, 1);
+    }
+    gotoxy(x, 4+i);
+    printarChar(202, 1);
 }

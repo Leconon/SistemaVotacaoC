@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+#define FIM_ARQUIVO -2
 #define ERRO_IO -1
 #define SUCESSO_IO 1
 #define SEPARADOR_VOTOS '|'
@@ -7,6 +8,7 @@
 #define NOME_ARQUIVO_VOTOS "dados.tse"
 
 FILE *arq;
+int arquivoAberto = 0;
 
 int escreverEmArquivo(char valor[]) {
     arq = fopen(NOME_ARQUIVO_VOTOS, "a+b");
@@ -20,8 +22,10 @@ int escreverEmArquivo(char valor[]) {
     return SUCESSO_IO;
 }
 
-/*int lerArquivo() {
-    arq = fopen(NOME_ARQUIVO_VOTOS, "r+b");
+int lerArquivo(int fecharEAbrir) {
+    if (fecharEAbrir) {
+        arq = fopen(NOME_ARQUIVO_VOTOS, "r+b");
+    }
 
     if(arq == NULL){
         return ERRO_IO;
@@ -38,7 +42,37 @@ int escreverEmArquivo(char valor[]) {
     fclose(arq);
 
     return SUCESSO_IO;
-}*/
+}
+
+int retornaRegistrosLaco() {
+    if (!arquivoAberto) {
+        arq = fopen(NOME_ARQUIVO_VOTOS, "r+b");
+        arquivoAberto = 1;
+    }
+
+    if (arq == NULL){
+        arquivoAberto = 0;
+        return ERRO_IO;
+    }
+
+    int digitos = 0;
+    char ch, cNum[] = "00";
+    while((ch=fgetc(arq))!= EOF) {
+        if (ch == SEPARADOR_TOTAL || ch == SEPARADOR_VOTOS) {
+            cNum[0] = '0';
+            cNum[0] = '0';
+            continue;
+        }
+        cNum[digitos++] = ch;
+        if (digitos > 1) {
+            return strToInt(cNum);
+        }
+    }
+
+    fclose(arq);
+    arquivoAberto = 0;
+    return FIM_ARQUIVO;
+}
 
 int confirmarVoto(char voto[]) {
     char gravar[4];

@@ -18,9 +18,9 @@ void delay(int milliseconds) {
         now = clock();
 }
 
-void put8s(char texto[]) {
+void put8s(char texto[], int qtdChar) {
     int i;
-    for (i=0; i<strlen(texto); i++) {
+    for (i=0; i<strlen(texto) && i<=(qtdChar<1?i:qtdChar); i++) {
         //printf("    %i ", texto[i]);
         switch (texto[i]) {
             case -25: printf("%c", 135); break;
@@ -30,6 +30,9 @@ void put8s(char texto[]) {
             case -6: printf("%c", 163); break;
             default: printf("%c", texto[i]);
         }
+    }
+    for (i=0; qtdChar>strlen(texto) && i<qtdChar-strlen(texto)+1 && qtdChar > 0; i++) {
+        printf(" ");
     }
 }
 

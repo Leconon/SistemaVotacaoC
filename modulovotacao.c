@@ -133,7 +133,7 @@ void desenharTelaVotacao() {
     gotoxy(5, 3);
     printf("SEU VOTO PARA PREFEITO    %i|%i", votosRealizados, qtdEleitores);
     gotoxy(5, 8);
-    put8s("Número: ");
+    put8s("Número: ", 0);
     desenhaRetangulo(12, 6, 4, 3, 0, 0);
     desenhaRetangulo(17, 6, 4, 3, 0, 0);
     gotoxy(5, 12);
@@ -163,7 +163,7 @@ void desenharDetalhesVoto(char num[], struct Candidato c) {
     if (num[1] != 'x') {
         printf("%c", num[1]);
         gotoxy(12, 12);
-        put8s(c.nome);
+        put8s(c.nome, 0);
     } else {
         gotoxy(19,8);
         printf("%c", ' ');
