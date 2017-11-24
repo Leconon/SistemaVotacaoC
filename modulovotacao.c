@@ -47,8 +47,8 @@ struct Candidato verificarCandidato(int num) {
     c.num = num;
     c.valido = 1;
     switch (num) {
-        case 17: strcpy(c.nome, "Voto Nulo"); return c;
-        case 22: strcpy(c.nome, "Maeli Gente"); return c;
+        case 17: strcpy(c.nome, "Maeli Gente"); return c;
+        case 22: strcpy(c.nome, "Loula do Brasil"); return c;
         case 31: strcpy(c.nome, "Lissandra Progresso"); return c;
         case 38: strcpy(c.nome, "Maia da Ana"); return c;
     }
@@ -131,7 +131,7 @@ void desenharBotoesAcao(char pressionado) {
 void desenharTelaVotacao() {
     desenhaRetangulo(2,1,45,22,0,0);
     gotoxy(5, 3);
-    printf("SEU VOTO PARA PREFEITO    %i|%i", votosRealizados, qtdEleitores);
+    printf("SEU VOTO PARA PREFEITO");
     gotoxy(5, 8);
     put8s("Número: ", 0);
     desenhaRetangulo(12, 6, 4, 3, 0, 0);

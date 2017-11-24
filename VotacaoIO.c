@@ -60,7 +60,8 @@ int retornaRegistrosLaco() {
     while((ch=fgetc(arq))!= EOF) {
         if (ch == SEPARADOR_TOTAL || ch == SEPARADOR_VOTOS) {
             cNum[0] = '0';
-            cNum[0] = '0';
+            cNum[1] = '0';
+            digitos = 0;
             continue;
         }
         cNum[digitos++] = ch;

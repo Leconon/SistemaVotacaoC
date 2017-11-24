@@ -147,8 +147,9 @@ void desenhaResultados() {
     desenhaInterface(" Resultados ");
     int qtdResultados = verificaTotalVotos();
     int votos[qtdResultados];
+    int segundoTurno = 0;
 
-    int i, voto = 0, pular = 1;
+    int i, voto = 0, pular = 0;
     while ((voto = retornaRegistrosLaco()) >= 0) {
         if (pular) {
             pular = 0;
@@ -156,6 +157,7 @@ void desenhaResultados() {
         }
         int nulo = 1;
         for (i=0; i<QTD_CANDIDATOS; i++) {
+            //printf("%i x %i\n", candidatos[i].num, voto);
             if (candidatos[i].num == voto) {
                 candidatos[i].numVotos++;
                 nulo = 0;
@@ -184,6 +186,18 @@ void desenhaResultados() {
         gotoxy(3, 6+(i*3)+1);
         printf("- %i Votos", candidatos[i].numVotos);
     }
+
+    gotoxy(54, 6);
+
+    for (i=0; i<QTD_CANDIDATOS; i++) {
+        if ((candidatos[i].numVotos * 100)/qtdResultados > 50) {
+            printf("SEM ");
+            segundoTurno = 1;
+            break;
+        }
+    }
+
+    printf("SEGUNDO TURNO");
 
     getch();
 }
